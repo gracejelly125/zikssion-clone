@@ -1,6 +1,7 @@
 <div class="flex flex-col gap-5 p-6">
   <section class="flex justify-between">
-    <app-search-form [(keyword)]="searchKeyword" (search)="onSearch($event)" />
+    <!-- <app-search-form [(keyword)]="searchKeyword" (search)="onSearch($event)" /> -->
+    <app-search-form [keyword]="searchKeyword" (search)="onSearch($event)" />
 
     <div class="flex items-center gap-4">
       <button

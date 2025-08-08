@@ -12,8 +12,20 @@ export class SearchFormComponent {
   @Input() keyword = ''
   @Output() search = new EventEmitter<string>()
 
-  onSubmit(event: Event) {
+  // onSubmit(event: Event) {
+  //   event.preventDefault()
+  //   this.search.emit(this.keyword.trim())
+  // }
+
+  onInput(value: string) {
+    this.search.emit(value.trim())
+  }
+
+  onEnter(event: Event) {
     event.preventDefault()
-    this.search.emit(this.keyword.trim())
+    const keyboardEvent = event as KeyboardEvent
+    if (keyboardEvent.key === 'Enter') {
+      this.search.emit(this.keyword.trim())
+    }
   }
 }

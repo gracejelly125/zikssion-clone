@@ -6,6 +6,7 @@ import { NoticeListItemComponent } from './components/notice-item/notice-item.co
 import DropMenuComponent from '../../../modals/drop-menu/drop-menu.modal'
 import NoticeFormComponent from './modals/notice-form.modal'
 import { FormsModule } from '@angular/forms'
+import { SearchFormComponent } from './components/search-form/search-form.component'
 
 type Notice = {
   id: number
@@ -23,7 +24,8 @@ type Notice = {
     ClickOutsideDirective,
     NoticeListItemComponent,
     DropMenuComponent,
-    NoticeFormComponent
+    NoticeFormComponent,
+    SearchFormComponent
   ],
   templateUrl: './customer-notice.page.html'
 })
@@ -59,16 +61,30 @@ export default class CustomerNoticePage {
     return Array.from({ length: count }, (_, i) => i + 1)
   }
 
-  onSearch(event: Event) {
-    const keyword = this.searchKeyword.trim().toLowerCase()
+  onSearch(keyword: string) {
+    this.searchKeyword = keyword
+    this.currentPage = 1
 
-    if (keyword === '') {
+    const trimmed = keyword.trim().toLowerCase()
+
+    if (trimmed === '') {
       this.sortNotices()
       return
     }
 
-    this.sortedNotices = this.notices.filter((notice) => notice.title.toLowerCase().includes(keyword))
+    this.sortedNotices = this.notices.filter((notice) => notice.title.toLowerCase().includes(trimmed))
   }
+
+  // onSearch(event: Event) {
+  //   const keyword = this.searchKeyword.trim().toLowerCase()
+
+  //   if (keyword === '') {
+  //     this.sortNotices()
+  //     return
+  //   }
+
+  //   this.sortedNotices = this.notices.filter((notice) => notice.title.toLowerCase().includes(keyword))
+  // }
 
   sortNotices() {
     const sorted = [...this.notices].sort((a, b) => {
