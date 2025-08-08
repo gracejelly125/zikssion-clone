@@ -2,9 +2,10 @@ import { Component } from '@angular/core'
 import { CATEGORIES } from '../../../data/notice-data'
 import { CommonModule } from '@angular/common'
 import { ClickOutsideDirective } from '../../../directives/click-outside.directive'
-import { NoticeListItemComponent } from './components/notice-item.component'
+import { NoticeListItemComponent } from './components/notice-item/notice-item.component'
 import DropMenuComponent from '../../../modals/drop-menu/drop-menu.modal'
 import NoticeFormComponent from './modals/notice-form.modal'
+import { FormsModule } from '@angular/forms'
 
 type Notice = {
   id: number
@@ -16,7 +17,14 @@ type Notice = {
 }
 @Component({
   selector: 'app-customer-notice-page',
-  imports: [CommonModule, ClickOutsideDirective, NoticeListItemComponent, DropMenuComponent, NoticeFormComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ClickOutsideDirective,
+    NoticeListItemComponent,
+    DropMenuComponent,
+    NoticeFormComponent
+  ],
   templateUrl: './customer-notice.page.html'
 })
 export default class CustomerNoticePage {
@@ -32,6 +40,35 @@ export default class CustomerNoticePage {
   contextMenuPosition = { top: 0, left: 0 }
 
   selectedNotice: any = null
+
+  searchKeyword = ''
+
+  itemsPerPage = 5
+  currentPage = 1
+
+  get pagedNotices() {
+    const start = (this.currentPage - 1) * this.itemsPerPage
+    return this.sortedNotices.slice(start, start + this.itemsPerPage)
+  }
+  onItemsPerPageChange() {
+    this.currentPage = 1
+  }
+
+  get totalPages(): number[] {
+    const count = Math.ceil(this.sortedNotices.length / this.itemsPerPage)
+    return Array.from({ length: count }, (_, i) => i + 1)
+  }
+
+  onSearch(event: Event) {
+    const keyword = this.searchKeyword.trim().toLowerCase()
+
+    if (keyword === '') {
+      this.sortNotices()
+      return
+    }
+
+    this.sortedNotices = this.notices.filter((notice) => notice.title.toLowerCase().includes(keyword))
+  }
 
   sortNotices() {
     const sorted = [...this.notices].sort((a, b) => {
@@ -70,6 +107,7 @@ export default class CustomerNoticePage {
   handleSortClick(label: string) {
     this.sortOrder = label === '오름차순' ? 'asc' : 'desc'
     this.sortNotices()
+    this.currentPage = 1
     this.closeDropMenu()
   }
 
@@ -101,6 +139,7 @@ export default class CustomerNoticePage {
 
   closeForm() {
     this.showForm = false
+    this.selectedNotice = null
   }
 
   submitForm(data: any) {

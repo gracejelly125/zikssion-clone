@@ -1,19 +1,7 @@
 <div class="flex flex-col gap-5 p-6">
   <section class="flex justify-between">
-    <form class="flex items-center gap-2">
-      <div class="relative w-full">
-        <button type="submit" class="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500">
-          <span class="iconify" data-icon="lucide:search" data-width="20" data-height="20"></span>
-        </button>
-        <div class="w-full rounded-md border border-gray-300 px-10 py-2 focus-within:border-blue-500">
-          <input
-            type="search"
-            placeholder="검색어를 입력해주세요."
-            class="w-full outline-none placeholder:text-sm placeholder:text-gray-500"
-          />
-        </div>
-      </div>
-    </form>
+    <app-search-form [(keyword)]="searchKeyword" (search)="onSearch($event)" />
+
     <div class="flex items-center gap-4">
       <button
         type="button"
@@ -41,7 +29,7 @@
       </button>
 
       @if (isDropMenuOpen) {
-        <drop-menu
+        <app-drop-menu
           [menuItems]="[
             { label: '오름차순', icon: 'lucide:arrow-up' },
             { label: '내림차순', icon: 'lucide:arrow-down' }
@@ -62,12 +50,16 @@
       }
     </ul>
 
-    @for (item of sortedNotices; track $index) {
-      <notice-item [item]="item" [index]="$index" (contextMenu)="onRightClick($event, item)" />
+    @for (item of pagedNotices; track $index) {
+      <app-notice-item
+        [item]="item"
+        [index]="$index + (currentPage - 1) * itemsPerPage"
+        (contextMenu)="onRightClick($event, item)"
+      />
     }
 
     @if (contextMenuVisible) {
-      <drop-menu
+      <app-drop-menu
         [menuItems]="[
           { label: '수정', icon: 'lucide:pencil' },
           { label: '삭제', icon: 'lucide:trash-2' }
@@ -87,10 +79,27 @@
       전체<span class="text-blue-500"> {{ notices.length }}</span>
     </p>
     <div class="flex items-center gap-4">
-      <button class="rounded-lg bg-blue-500 px-4 py-2 text-white">1</button>
+      <div class="flex items-center gap-2">
+        @for (page of totalPages; track page; let i = $index) {
+          <button
+            type="button"
+            class="rounded-lg border px-4 py-2 transition"
+            [ngClass]="{
+              'border-blue-500 bg-blue-500 text-white': currentPage === i + 1,
+              'border-gray-300 bg-white text-black hover:bg-gray-100': currentPage !== i + 1
+            }"
+            (click)="currentPage = i + 1"
+          >
+            {{ i + 1 }}
+          </button>
+        }
+      </div>
+
       <div class="relative w-28">
         <select
           class="w-full appearance-none rounded-md border border-gray-300 px-4 py-2 pr-10 outline-none focus:border-blue-500"
+          [(ngModel)]="itemsPerPage"
+          (change)="onItemsPerPageChange()"
         >
           <option value="5">5</option>
           <option value="10">10</option>

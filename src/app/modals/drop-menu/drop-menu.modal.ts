@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common'
 import { Component, Input, Output, EventEmitter } from '@angular/core'
 
 @Component({
-  selector: 'drop-menu',
+  selector: 'app-drop-menu',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './drop-menu.modal.html'

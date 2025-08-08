@@ -7,6 +7,6 @@
   <li>{{ item.fixed ? '고정' : '-' }}</li>
   <li>{{ item.visibility ? '노출' : '숨김' }}</li>
   <li>{{ item.target }}</li>
-  <li>{{ item.title }}</li>
-  <li>{{ item.date }}</li>
+  <li class="max-w-[200px] truncate">{{ item.title }}</li>
+  <li>{{ item.date | date: 'yyyy-MM-dd HH:mm' }}</li>
 </ul>
