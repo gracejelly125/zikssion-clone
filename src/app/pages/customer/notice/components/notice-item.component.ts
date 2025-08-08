@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core'
 import { CommonModule } from '@angular/common'
 
 @Component({
-  selector: 'notice-list-item',
+  selector: 'notice-item',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './notice-item.component.html'

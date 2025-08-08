@@ -62,8 +62,8 @@
       }
     </ul>
 
-    @for (item of notices; track $index) {
-      <notice-list-item [item]="item" [index]="$index" (contextMenu)="onRightClick($event, item)" />
+    @for (item of sortedNotices; track $index) {
+      <notice-item [item]="item" [index]="$index" (contextMenu)="onRightClick($event, item)" />
     }
 
     @if (contextMenuVisible) {
@@ -76,6 +76,9 @@
         (itemClick)="handleMenuClick($event)"
         (clickOutside)="closeContextMenu()"
       />
+    }
+    @if (showForm) {
+      <app-notice-form [editData]="selectedNotice" (submit)="submitForm($event)" (cancel)="closeForm()" />
     }
   </section>
 
