@@ -1,0 +1,15 @@
+<header class="flex h-19 items-center justify-between border-b border-gray-300 p-6">
+  <h1 class="text-xl font-extrabold">
+    {{ menuState.currentHeaderLabel() || '대시보드' }}
+  </h1>
+  <nav class="flex gap-10">
+    <button type="button" class="flex items-center gap-2">
+      <span class="iconify size-5" data-icon="lucide:user-circle"></span>
+      홍길동
+    </button>
+    <button type="button" class="flex items-center gap-2">
+      <span class="iconify size-5" data-icon="lucide:log-out"></span>
+      로그아웃
+    </button>
+  </nav>
+</header>

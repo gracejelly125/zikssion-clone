@@ -1,0 +1,107 @@
+<div class="flex flex-col gap-5 p-6">
+  <section class="flex justify-between">
+    <form class="flex items-center gap-2">
+      <div class="relative w-full">
+        <button type="submit" class="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500">
+          <span class="iconify" data-icon="lucide:search" data-width="20" data-height="20"></span>
+        </button>
+        <div class="w-full rounded-md border border-gray-300 px-10 py-2 focus-within:border-blue-500">
+          <input
+            type="search"
+            placeholder="검색어를 입력해주세요."
+            class="w-full outline-none placeholder:text-sm placeholder:text-gray-500"
+          />
+        </div>
+      </div>
+    </form>
+    <div class="flex items-center gap-4">
+      <button
+        type="button"
+        class="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 whitespace-nowrap text-white shadow-md"
+        (click)="openForm()"
+      >
+        <span class="iconify" data-icon="lucide:plus" data-width="24" data-height="24"></span>
+        등록
+      </button>
+      <img src="/assets/excel_icon.svg" alt="엑셀 아이콘" class="min-w-6 py-1" />
+      @if (showForm) {
+        <app-notice-form (submit)="submitForm($event)" (cancel)="closeForm()" />
+      }
+    </div>
+  </section>
+
+  <section class="flex items-center justify-between">
+    <button type="button" class="mr-auto flex items-center gap-2 rounded-full bg-blue-500 px-3 py-1 text-sm text-white">
+      <span class="iconify" data-icon="lucide:arrow-down" data-width="20" data-height="20"></span>
+      등록일시
+    </button>
+    <div class="relative inline-block text-center">
+      <button type="button" class="px-2 py-1" (click)="toggleDropMenu()">
+        <span class="iconify" data-icon="lucide:more-vertical" data-width="24" data-height="24"></span>
+      </button>
+
+      @if (isDropMenuOpen) {
+        <drop-menu
+          [menuItems]="[
+            { label: '오름차순', icon: 'lucide:arrow-up' },
+            { label: '내림차순', icon: 'lucide:arrow-down' }
+          ]"
+          (itemClick)="handleMenuClick($event)"
+          (clickOutside)="closeDropMenu()"
+        />
+      }
+    </div>
+  </section>
+
+  <section class="flex flex-col">
+    <ul
+      class="grid grid-cols-[1fr_1fr_1fr_1fr_2fr_2fr] border-b-2 border-gray-200 px-4 py-2 font-semibold text-gray-700"
+    >
+      @for (category of categories; track category) {
+        <li>{{ category }}</li>
+      }
+    </ul>
+
+    @for (item of notices; track $index) {
+      <notice-list-item [item]="item" [index]="$index" (contextMenu)="onRightClick($event, item)" />
+    }
+
+    @if (contextMenuVisible) {
+      <drop-menu
+        [menuItems]="[
+          { label: '수정', icon: 'lucide:pencil' },
+          { label: '삭제', icon: 'lucide:trash-2' }
+        ]"
+        [position]="contextMenuPosition"
+        (itemClick)="handleMenuClick($event)"
+        (clickOutside)="closeContextMenu()"
+      />
+    }
+  </section>
+
+  <section class="flex justify-between">
+    <p class="font-extrabold">
+      전체<span class="text-blue-500"> {{ notices.length }}</span>
+    </p>
+    <div class="flex items-center gap-4">
+      <button class="rounded-lg bg-blue-500 px-4 py-2 text-white">1</button>
+      <div class="relative w-28">
+        <select
+          class="w-full appearance-none rounded-md border border-gray-300 px-4 py-2 pr-10 outline-none focus:border-blue-500"
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+
+        <span
+          class="iconify pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-gray-500"
+          data-icon="lucide:chevron-down"
+          data-width="20"
+          data-height="20"
+        ></span>
+      </div>
+    </div>
+  </section>
+</div>

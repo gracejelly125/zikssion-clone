@@ -1,0 +1,40 @@
+<button
+  type="button"
+  class="flex w-full items-center justify-between rounded-md px-4 py-2 hover:bg-gray-100 hover:text-black"
+  (click)="selectMenu()"
+  [ngClass]="{
+    'bg-blue-100 text-blue-500': selectedMenuLabel() === menu().label
+  }"
+>
+  <div class="flex items-center gap-2">
+    @if (menu().icon) {
+      <!-- <span class="iconify size-5" [attr.data-icon]="menu().icon" data-inline="false"></span> -->
+    }
+    <span whitespace-nowrap>{{ menu().label }}</span>
+  </div>
+
+  @if (menu().children && menu().children?.length) {
+    <img
+      class="iconify size-4 transform transition-transform duration-300"
+      [ngClass]="selectedMenuLabel() === menu().label ? 'rotate-180' : ''"
+      src="https://api.iconify.design/material-symbols:keyboard-arrow-up.svg"
+    />
+  }
+</button>
+@if (selectedMenuLabel() === menu().label && menu().children && menu().children?.length) {
+  <ul class="mt-1 ml-6 flex flex-col gap-1 border-l pl-4 text-sm text-gray-500">
+    @for (child of menu().children; track child.label) {
+      <li>
+        <a
+          class="flex items-center rounded-md px-4 py-2 hover:bg-gray-100 hover:text-black"
+          [routerLink]="child.route"
+          routerLinkActive="bg-blue-100 text-blue-500"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="menuState.setHeaderLabel(child.label)"
+        >
+          {{ child.label }}
+        </a>
+      </li>
+    }
+  </ul>
+}

@@ -1,0 +1,52 @@
+<div class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+  <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+    <h2 class="mb-6 text-lg font-bold text-gray-800">공지 등록</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+      <label class="flex items-center gap-2 text-sm text-gray-700">
+        <input type="checkbox" formControlName="fixed" class="accent-blue-500" />
+        고정 여부
+      </label>
+
+      <label class="flex items-center gap-2 text-sm text-gray-700">
+        <input type="checkbox" formControlName="visibility" class="accent-blue-500" />
+        노출 여부
+      </label>
+
+      <select
+        formControlName="target"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500"
+      >
+        <option value="회원">회원</option>
+        <option value="비회원">비회원</option>
+        <option value="전체">전체</option>
+      </select>
+
+      <input
+        type="text"
+        formControlName="title"
+        placeholder="제목을 입력하세요"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500"
+      />
+
+      <input
+        type="datetime-local"
+        formControlName="date"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500"
+      />
+
+      <div class="mt-4 flex justify-end gap-2">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
+          취소
+        </button>
+        <button type="submit" class="rounded-md bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600">
+          등록
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

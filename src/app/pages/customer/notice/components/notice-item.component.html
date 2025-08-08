@@ -1,0 +1,12 @@
+<ul
+  class="grid grid-cols-[1fr_1fr_1fr_1fr_2fr_2fr] border-b border-gray-200 px-4 py-2 text-sm text-gray-800"
+  [ngClass]="{ 'bg-gray-100': index % 2 === 0 }"
+  (contextmenu)="handleContextMenu($event)"
+>
+  <li>{{ index + 1 }}</li>
+  <li>{{ item.fixed ? '고정' : '-' }}</li>
+  <li>{{ item.visibility ? '노출' : '숨김' }}</li>
+  <li>{{ item.target }}</li>
+  <li>{{ item.title }}</li>
+  <li>{{ item.date }}</li>
+</ul>

@@ -1,0 +1,23 @@
+<div
+  class="z-50 w-32 rounded-md border border-gray-200 bg-white py-1 shadow-lg"
+  [class.absolute]="!position"
+  [class.fixed]="!!position"
+  [ngStyle]="position ? { top: position.top + 'px', left: position.left + 'px' } : { right: '0', marginTop: '0.5rem' }"
+  (clickOutside)="itemClick.emit('close')"
+>
+  <ul class="py-1 text-sm text-gray-700">
+    @for (item of menuItems; track item.label) {
+      <li>
+        <button
+          class="flex w-full items-center justify-between px-4 py-2 hover:bg-gray-100"
+          (click)="itemClick.emit(item.label)"
+        >
+          {{ item.label }}
+          @if (item.icon) {
+            <span class="iconify" [attr.data-icon]="item.icon" data-width="16" data-height="16"></span>
+          }
+        </button>
+      </li>
+    }
+  </ul>
+</div>
