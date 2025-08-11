@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, computed, input, signal } from '@angular/core'
 import { CATEGORIES } from '../../../data/notice-data'
 import { CommonModule } from '@angular/common'
 import { ClickOutsideDirective } from '../../../directives/click-outside.directive'
@@ -8,7 +8,7 @@ import NoticeFormComponent from './modals/notice-form.modal'
 import { FormsModule } from '@angular/forms'
 import { SearchFormComponent } from './components/search-form/search-form.component'
 
-type Notice = {
+export type Notice = {
   id: number
   fixed: boolean
   visibility: boolean
@@ -33,7 +33,9 @@ export default class CustomerNoticePage {
   notices: Notice[] = []
   categories = CATEGORIES
   sortOrder: 'asc' | 'desc' = 'desc'
-  sortedNotices: Notice[] = []
+  sortedNotices = signal<Notice[]>([])
+
+  excelUrl = '/assets/excel_icon.svg'
 
   isDropMenuOpen = false
 
@@ -43,28 +45,40 @@ export default class CustomerNoticePage {
 
   selectedNotice: any = null
 
-  searchKeyword = ''
+  searchKeyword = signal('')
 
-  itemsPerPage = 5
-  currentPage = 1
+  itemsPerPage = signal<number>(5)
+  currentPage = signal(1)
 
-  get pagedNotices() {
-    const start = (this.currentPage - 1) * this.itemsPerPage
-    return this.sortedNotices.slice(start, start + this.itemsPerPage)
-  }
-  onItemsPerPageChange() {
-    this.currentPage = 1
-  }
+  filteredNotices = computed(() => {
+    const trimmed = this.searchKeyword().trim().toLowerCase()
+    const list = this.sortedNotices()
+    if (!trimmed) return list
+    return list.filter((n) => n.title.toLowerCase().includes(trimmed))
+  })
 
-  get totalPages(): number[] {
-    const count = Math.ceil(this.sortedNotices.length / this.itemsPerPage)
+  pagedNotices = computed(() => {
+    const start = (this.currentPage() - 1) * this.itemsPerPage()
+    return this.filteredNotices().slice(start, start + this.itemsPerPage())
+  })
+
+  totalPages = computed(() => {
+    const count = Math.ceil(this.filteredNotices().length / this.itemsPerPage())
     return Array.from({ length: count }, (_, i) => i + 1)
+  })
+
+  constructor() {
+    this.notices = JSON.parse(localStorage.getItem('notices')!) || []
+    this.sortNotices()
+  }
+
+  onItemsPerPageChange() {
+    this.currentPage.set(1)
   }
 
   onSearch(keyword: string) {
-    this.searchKeyword = keyword
-    this.currentPage = 1
-
+    this.searchKeyword.set(keyword)
+    this.currentPage.set(1)
     const trimmed = keyword.trim().toLowerCase()
 
     if (trimmed === '') {
@@ -72,30 +86,18 @@ export default class CustomerNoticePage {
       return
     }
 
-    this.sortedNotices = this.notices.filter((notice) => notice.title.toLowerCase().includes(trimmed))
+    const filtered = this.notices
+      .filter((notice) => notice.title.toLowerCase().includes(trimmed))
+      .sort((a, b) => (this.sortOrder === 'asc' ? a.id - b.id : b.id - a.id))
+
+    this.sortedNotices.set(filtered)
   }
-
-  // onSearch(event: Event) {
-  //   const keyword = this.searchKeyword.trim().toLowerCase()
-
-  //   if (keyword === '') {
-  //     this.sortNotices()
-  //     return
-  //   }
-
-  //   this.sortedNotices = this.notices.filter((notice) => notice.title.toLowerCase().includes(keyword))
-  // }
 
   sortNotices() {
     const sorted = [...this.notices].sort((a, b) => {
       return this.sortOrder === 'asc' ? a.id - b.id : b.id - a.id
     })
-    this.sortedNotices = sorted
-  }
-
-  constructor() {
-    this.notices = JSON.parse(localStorage.getItem('notices')!) || []
-    this.sortNotices()
+    this.sortedNotices.set(sorted)
   }
 
   toggleDropMenu() {
@@ -123,7 +125,7 @@ export default class CustomerNoticePage {
   handleSortClick(label: string) {
     this.sortOrder = label === '오름차순' ? 'asc' : 'desc'
     this.sortNotices()
-    this.currentPage = 1
+    this.currentPage.set(1)
     this.closeDropMenu()
   }
 

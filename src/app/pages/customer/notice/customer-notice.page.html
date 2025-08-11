@@ -1,7 +1,6 @@
 <div class="flex flex-col gap-5 p-6">
   <section class="flex justify-between">
-    <!-- <app-search-form [(keyword)]="searchKeyword" (search)="onSearch($event)" /> -->
-    <app-search-form [keyword]="searchKeyword" (search)="onSearch($event)" />
+    <app-search-form [(keyword)]="searchKeyword" (search)="onSearch($event)" />
 
     <div class="flex items-center gap-4">
       <button
@@ -9,7 +8,7 @@
         class="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 whitespace-nowrap text-white shadow-md"
         (click)="openForm()"
       >
-        <span class="iconify" data-icon="lucide:plus" data-width="24" data-height="24"></span>
+        <img src="https://api.iconify.design/lucide/plus.svg?color=white" alt="등록 아이콘" width="24" height="24" />
         등록
       </button>
       <img src="/assets/excel_icon.svg" alt="엑셀 아이콘" class="min-w-6 py-1" />
@@ -21,19 +20,24 @@
 
   <section class="flex items-center justify-between">
     <button type="button" class="mr-auto flex items-center gap-2 rounded-full bg-blue-500 px-3 py-1 text-sm text-white">
-      <span class="iconify" data-icon="lucide:arrow-down" data-width="20" data-height="20"></span>
+      <img
+        src="https://api.iconify.design/lucide/arrow-down.svg?color=white"
+        alt="등록일시 아이콘"
+        width="20"
+        height="20"
+      />
       등록일시
     </button>
     <div class="relative inline-block text-center">
       <button type="button" class="px-2 py-1" (click)="toggleDropMenu()">
-        <span class="iconify" data-icon="lucide:more-vertical" data-width="24" data-height="24"></span>
+        <img src="https://api.iconify.design/lucide/more-vertical.svg" alt="더보기 아이콘" width="24" height="24" />
       </button>
 
       @if (isDropMenuOpen) {
         <app-drop-menu
           [menuItems]="[
-            { label: '오름차순', icon: 'lucide:arrow-up' },
-            { label: '내림차순', icon: 'lucide:arrow-down' }
+            { label: '오름차순', icon: 'https://api.iconify.design/lucide/arrow-up.svg' },
+            { label: '내림차순', icon: 'https://api.iconify.design/lucide/arrow-down.svg' }
           ]"
           (itemClick)="handleMenuClick($event)"
           (clickOutside)="closeDropMenu()"
@@ -51,19 +55,22 @@
       }
     </ul>
 
-    @for (item of pagedNotices; track $index) {
-      <app-notice-item
-        [item]="item"
-        [index]="$index + (currentPage - 1) * itemsPerPage"
-        (contextMenu)="onRightClick($event, item)"
-      />
-    }
+    <ul class="text-sm text-gray-800">
+      @for (item of pagedNotices(); track $index) {
+        <app-notice-item
+          [item]="item"
+          [index]="filteredNotices().length - ($index + (currentPage() - 1) * itemsPerPage())"
+          class="grid grid-cols-[1fr_1fr_1fr_1fr_2fr_2fr] border-b border-gray-200 px-4 py-2 odd:bg-gray-100"
+          (contextmenu)="onRightClick($event, item)"
+        />
+      }
+    </ul>
 
     @if (contextMenuVisible) {
       <app-drop-menu
         [menuItems]="[
-          { label: '수정', icon: 'lucide:pencil' },
-          { label: '삭제', icon: 'lucide:trash-2' }
+          { label: '수정', icon: 'https://api.iconify.design/lucide/pencil.svg' },
+          { label: '삭제', icon: 'https://api.iconify.design/lucide/trash-2.svg' }
         ]"
         [position]="contextMenuPosition"
         (itemClick)="handleMenuClick($event)"
@@ -77,19 +84,19 @@
 
   <section class="flex justify-between">
     <p class="font-extrabold">
-      전체<span class="text-blue-500"> {{ notices.length }}</span>
+      전체<span class="text-blue-500"> {{ filteredNotices().length }}</span>
     </p>
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
-        @for (page of totalPages; track page; let i = $index) {
+        @for (page of totalPages(); track page; let i = $index) {
           <button
             type="button"
             class="rounded-lg border px-4 py-2 transition"
             [ngClass]="{
-              'border-blue-500 bg-blue-500 text-white': currentPage === i + 1,
-              'border-gray-300 bg-white text-black hover:bg-gray-100': currentPage !== i + 1
+              'border-blue-500 bg-blue-500 text-white': currentPage() === i + 1,
+              'border-gray-300 bg-white text-black hover:bg-gray-100': currentPage() !== i + 1
             }"
-            (click)="currentPage = i + 1"
+            (click)="currentPage.set(i + 1)"
           >
             {{ i + 1 }}
           </button>
@@ -108,12 +115,13 @@
           <option value="20">20</option>
         </select>
 
-        <span
-          class="iconify pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-gray-500"
-          data-icon="lucide:chevron-down"
-          data-width="20"
-          data-height="20"
-        ></span>
+        <img
+          src="https://api.iconify.design/lucide/chevron-down.svg"
+          alt="드롭다운 아이콘"
+          width="20"
+          height="20"
+          class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-gray-500"
+        />
       </div>
     </div>
   </section>

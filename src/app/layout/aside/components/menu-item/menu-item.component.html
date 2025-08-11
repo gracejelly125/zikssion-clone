@@ -8,14 +8,14 @@
 >
   <div class="flex items-center gap-2">
     @if (menu().icon) {
-      <span class="iconify size-5" [attr.data-icon]="menu().icon" data-inline="false"></span>
+      <img class="size-5" [src]="menu().icon" alt="메뉴 아이콘" />
     }
     <span whitespace-nowrap>{{ menu().label }}</span>
   </div>
 
   @if (menu().children && menu().children?.length) {
     <img
-      class="iconify size-4 transform transition-transform duration-300"
+      class="size-5 transform transition-transform duration-300"
       [ngClass]="selectedMenuLabel() === menu().label ? 'rotate-180' : ''"
       src="https://api.iconify.design/material-symbols:keyboard-arrow-up.svg"
     />

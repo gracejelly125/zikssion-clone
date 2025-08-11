@@ -16,7 +16,7 @@
             (click)="menuState.setHeaderLabel(menu.label)"
           >
             @if (menu.icon) {
-              <span class="iconify size-5" [attr.data-icon]="menu.icon" data-inline="false"></span>
+              <img class="size-5" [src]="menu.icon" data-inline="false" />
             }
             <span>{{ menu.label }}</span>
           </a>

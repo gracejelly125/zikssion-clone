@@ -1,30 +1,18 @@
-<!-- <form class="flex items-center gap-2" (submit)="onSubmit($event)">
-  <div class="relative w-full">
-    <button type="submit" class="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500">
-      <span class="iconify" data-icon="lucide:search" data-width="20" data-height="20"></span>
-    </button>
-    <div class="w-full rounded-md border border-gray-300 px-10 py-2 focus-within:border-blue-500">
-      <input
-        type="search"
-        [(ngModel)]="keyword"
-        name="search"
-        placeholder="검색어를 입력해주세요."
-        class="w-full outline-none placeholder:text-sm placeholder:text-gray-500"
-      />
-    </div>
-  </div>
-</form> -->
-
 <div class="flex items-center gap-2">
   <div class="relative w-full">
     <span class="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500">
-      <span class="iconify" data-icon="lucide:search" data-width="20" data-height="20"></span>
+      <img
+        src="https://api.iconify.design/lucide/search.svg?color=%23888888"
+        alt="검색 아이콘"
+        width="20"
+        height="20"
+      />
     </span>
     <div class="w-full rounded-md border border-gray-300 px-10 py-2 focus-within:border-blue-500">
       <input
         type="search"
-        [(ngModel)]="keyword"
-        (input)="onInput(keyword)"
+        [value]="keyword()"
+        (input)="onInput($event)"
         (keydown.enter)="onEnter($event)"
         name="search"
         placeholder="검색어를 입력해주세요."

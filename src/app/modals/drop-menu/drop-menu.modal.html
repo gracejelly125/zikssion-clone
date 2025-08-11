@@ -14,7 +14,7 @@
         >
           {{ item.label }}
           @if (item.icon) {
-            <span class="iconify" [attr.data-icon]="item.icon" data-width="16" data-height="16"></span>
+            <img class="inline-block" [src]="item.icon" width="16" height="16" alt="icon" />
           }
         </button>
       </li>

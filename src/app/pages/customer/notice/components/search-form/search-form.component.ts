@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, input, model, output } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 
@@ -9,15 +9,12 @@ import { FormsModule } from '@angular/forms'
   templateUrl: './search-form.component.html'
 })
 export class SearchFormComponent {
-  @Input() keyword = ''
-  @Output() search = new EventEmitter<string>()
+  keyword = model<string>('')
+  search = output<string>()
 
-  // onSubmit(event: Event) {
-  //   event.preventDefault()
-  //   this.search.emit(this.keyword.trim())
-  // }
-
-  onInput(value: string) {
+  onInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value
+    this.keyword.set(value)
     this.search.emit(value.trim())
   }
 
@@ -25,7 +22,7 @@ export class SearchFormComponent {
     event.preventDefault()
     const keyboardEvent = event as KeyboardEvent
     if (keyboardEvent.key === 'Enter') {
-      this.search.emit(this.keyword.trim())
+      this.search.emit(this.keyword().trim())
     }
   }
 }

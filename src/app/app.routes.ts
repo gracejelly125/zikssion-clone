@@ -41,16 +41,29 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/customer/notice/customer-notice.page')
               }
             ]
+          },
+          {
+            path: 'faq',
+            loadComponent: () => import('./pages/customer/faq/faq.page')
           }
         ]
       },
       {
-        path: 'customer/faq',
-        loadComponent: () => import('./pages/customer/faq/faq.page')
-      },
-      {
         path: 'site',
-        loadComponent: () => import('./pages/site/site.page')
+        children: [
+          {
+            path: 'banner',
+            loadComponent: () => import('./pages/site/banner/banner.page')
+          },
+          {
+            path: 'business-info',
+            loadComponent: () => import('./pages/site/business-info/business-info.page')
+          },
+          {
+            path: 'policy',
+            loadComponent: () => import('./pages/site/policy/policy.page')
+          }
+        ]
       },
       {
         path: 'notification',
