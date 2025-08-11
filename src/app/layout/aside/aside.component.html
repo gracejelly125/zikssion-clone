@@ -13,10 +13,10 @@
             [routerLink]="menu.route"
             routerLinkActive="bg-blue-100 text-blue-500"
             [routerLinkActiveOptions]="{ exact: true }"
-            (click)="menuState.setHeaderLabel(menu.label)"
+            (click)="clickMenu(menu)"
           >
             @if (menu.icon) {
-              <img class="size-5" [src]="menu.icon" data-inline="false" />
+              <img class="size-5" [src]="menu.icon" />
             }
             <span>{{ menu.label }}</span>
           </a>

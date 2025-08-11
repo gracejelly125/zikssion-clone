@@ -33,4 +33,9 @@ export class AsideComponent {
       !!menu.children?.some((child) => currentUrl.startsWith(child.route))
     )
   }
+
+  clickMenu(menu: any) {
+    this.openMenuLabel.set(null)
+    this.menuState.setHeaderLabel(menu.label)
+  }
 }

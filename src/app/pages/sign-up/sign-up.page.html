@@ -1,0 +1,84 @@
+<section class="mx-auto flex h-dvh w-full flex-col items-center justify-center gap-6">
+  <div class="flex flex-col items-center gap-4">
+    <div class="relative flex size-16 items-center justify-center rounded-full bg-blue-500">
+      <img
+        src="https://api.iconify.design/material-symbols:person-shield.svg?color=white"
+        alt="회원가입 아이콘"
+        class="size-10"
+      />
+    </div>
+    <h1 class="text-2xl font-extrabold">회원가입</h1>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex w-full max-w-xs flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label class="flex items-center gap-1 text-xs font-bold"> 닉네임 <span class="text-blue-500">*</span> </label>
+      <div class="relative rounded-md border border-gray-300 p-2 text-sm focus-within:border-blue-500">
+        <img
+          src="https://api.iconify.design/lucide:user.svg?color=gray"
+          alt="닉네임 아이콘"
+          class="absolute top-1/2 left-3 size-4 -translate-y-1/2"
+        />
+        <input
+          type="text"
+          formControlName="nickname"
+          placeholder="닉네임을 입력해주세요."
+          class="w-full pl-8 outline-none placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="flex items-center gap-1 text-xs font-bold"> 이메일 <span class="text-blue-500">*</span> </label>
+      <div class="relative rounded-md border border-gray-300 p-2 text-sm focus-within:border-green-500">
+        <img
+          src="https://api.iconify.design/lucide:mail.svg?color=gray"
+          alt="이메일 아이콘"
+          class="absolute top-1/2 left-3 size-4 -translate-y-1/2"
+        />
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="이메일을 입력해주세요."
+          class="w-full pl-8 outline-none placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="flex items-center gap-1 text-xs font-bold"> 비밀번호 <span class="text-blue-500">*</span> </label>
+      <div class="relative rounded-md border border-gray-300 p-2 text-sm focus-within:border-red-500">
+        <img
+          src="https://api.iconify.design/lucide:key.svg?color=gray"
+          alt="비밀번호 아이콘"
+          class="absolute top-1/2 left-3 size-4 -translate-y-1/2"
+        />
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="비밀번호를 입력해주세요."
+          class="w-full pl-8 outline-none placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="form.invalid"
+      class="rounded bg-blue-500 p-2 text-sm font-semibold text-white disabled:bg-gray-200 disabled:text-gray-400"
+    >
+      회원가입
+    </button>
+
+    <div class="flex flex-col items-center gap-2 text-sm">
+      <p>이미 회원이신가요?</p>
+      <button
+        type="button"
+        class="rounded-full bg-blue-400 px-4 py-2 text-sm font-semibold text-white"
+        (click)="goToSignIn()"
+      >
+        로그인하러 가기
+      </button>
+    </div>
+  </form>
+</section>

@@ -1,16 +1,28 @@
 <header class="flex h-19 items-center justify-between border-b border-gray-300 p-6">
   <h1 class="text-xl font-extrabold">
-    {{ menuState.currentHeaderLabel() || '대시보드' }}
+    {{ menuState!.currentHeaderLabel() || currentHeaderLabel }}
   </h1>
   <nav class="flex gap-10">
-    <button type="button" class="flex items-center gap-2">
-      <img class="size-5" src="https://api.iconify.design/lucide:user-circle.svg" />
-      홍길동
-    </button>
+    @if (userStore.isLoggedIn()) {
+      <button type="button" class="flex items-center gap-2">
+        <img class="size-5" src="https://api.iconify.design/lucide:user-circle.svg" alt="사용자 아이콘" />
+        {{ userStore.currentUser()?.nickname || '사용자' }}
+      </button>
 
-    <button type="button" class="flex items-center gap-2">
-      <img class="size-5" src="https://api.iconify.design/lucide:log-out.svg" />
-      로그아웃
-    </button>
+      <button type="button" class="flex items-center gap-2" (click)="onLogout()">
+        <img class="size-5" src="https://api.iconify.design/lucide:log-out.svg" alt="로그아웃 아이콘" />
+        로그아웃
+      </button>
+    } @else {
+      <button type="button" class="flex items-center gap-2">
+        <img class="size-5" src="https://api.iconify.design/lucide:user-circle.svg" alt="게스트 아이콘" />
+        Guest
+      </button>
+
+      <button type="button" class="flex cursor-pointer items-center gap-2" (click)="onLogin()">
+        <img class="size-5" src="https://api.iconify.design/lucide:log-in.svg" alt="로그인 아이콘" />
+        로그인
+      </button>
+    }
   </nav>
 </header>
